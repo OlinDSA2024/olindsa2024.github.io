@@ -281,7 +281,7 @@ else
 
 <h2 id="dijkstras-algorithm">Dijkstra’s Algorithm</h2>
 
-<p>I have some companion slides to go along with the presentation of Dijkstra’s algorithm.  I’ll have these up on the projector, but you can <a href="/in_class/graphsearch_slides.pdf">access the slides</a> using this link.</p>
+<p>I have some companion slides to go along with the presentation of <a href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">Dijkstra’s algorithm</a>.  I’ll have these up on the projector, but you can <a href="/in_class/graphsearch_slides.pdf">access the slides</a> using this link.</p>
 
 <p>Before we introduce Dijkstra’s algorithm, we need to briefly introduce the idea of weighted graphs.  Imagine that in addition to storing the neighbors of each vertex in our graph, we also store an edge weight.  Here is what a graph might look like with edge weights added.</p>
 
@@ -289,9 +289,69 @@ else
 
 <p>As an aside, edge weights could encode a bunch of different things in our graph.  In computer vision, edge weights can encode the similarity between neighboring parts of an image and this graph can then be processed to segment parts of an image.  Another classical example is graph traversal where we might want to find the shortest path through a graph connecting $v_{start}$ to $v_{goal}$. In this setting, the cost of a path is defined by the sum of edge weights along the path.</p>
 
+<p>Dijkstra’s algorithm gives us a way to compute shortest (defined in terms of the lowest sum of edges) to move between a given source node and a destination node.  In order for Dijkstra’s algorithm to work, none of the edges in the network can have negative cost.</p>
+
+<p>Looking at our sample graph, let’s calculate a few shortest paths.</p>
+
+<p>Dijkstra’s algorithm gives us a way to compute the shortest path in a systematic fashion.  The pseudocode for the algorithm is defined below.  Before we go through the algorithm, let’s make sure we understand the role of two maps (or, if you prefer, dictionaries) that we will be creating.  The first is called <code class="language-plaintext highlighter-rouge">prev</code> and it is used to reconstruct the shortest path once we find it.  The second is called <code class="language-plaintext highlighter-rouge">dist</code> and you can think of this as a tentative cost to travel from the start node to any particular node.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for each vertex, v that is not the source:
+    prev[v] ← UNDEFINED
+    dist[v] ← INFINITY
+    queue.addWithPriority(v, INFINITY)
+
+dist[source] ← 0
+queue.addWithPriority(source, 0)
+
+while queue is not empty:
+    u ← vertex in queue with min priority
+    remove u from queue
+    for each neighbor v of u still in queue:
+        alt ← dist[u] + edgecost(u, v)
+        if alt &lt; dist[v]:
+            dist[v] ← alt
+            queue.changePriority(v, alt)
+            prev[v] ← u
+// reconstruct shortest path from prev
+</code></pre></div></div>
+<p>Now that we’ve seen this pseudocode, let’s go through <a href="(graphsearch_slides.pdf)">our slides</a> to see an example of it in action.</p>
+
+<p><strong>Problem 1</strong> How would you reconstruct the shortest path using <code class="language-plaintext highlighter-rouge">prev</code>?</p>
+
 <h2 id="min-heaps">Min-Heaps</h2>
 
-<p>A <a href="https://en.wikipedia.org/wiki/Binary_heap">binary heap</a> is a data structure that is very useful for implementing the priority queue will need for Dijkstra.  Before getting started with learning about what a Heap is, let’s talk about the running time of various operations on a heap.</p>
+<p>A <a href="https://en.wikipedia.org/wiki/Binary_heap">binary heap</a> is a data structure that is very useful for implementing the priority queue will need for Dijkstra.</p>
+
+<p>Now that we know what a heap is, let’s talk about the running time of various operations on a heap.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Operation</th>
+      <th>Runtime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Insert</td>
+      <td>$\Theta(\log n)$</td>
+    </tr>
+    <tr>
+      <td>Delete min</td>
+      <td>$\Theta(\log n)$</td>
+    </tr>
+    <tr>
+      <td>Find min</td>
+      <td>$\Theta(1)$</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Problem 2</strong> Why are these runtimes attractive from the perspective of implementing Dijkstra’s algorithm?</p>
+
+<p><strong>Problem 3</strong> What operation needed for Dijkstra’s algorithm is not present in the list above?</p>
+
+<p><strong>Problem 4</strong> Show why delete min, insert, and change heap number are all $\Theta(\log n)$.</p>
 
         
       </section>
