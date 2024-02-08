@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.17.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+--><html lang="en" class="no-js">
+  <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+
+<script>
+class AnchorNoProxy extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this._$a = null;
+  }
+  connectedCallback() {
+    const href = this.getAttribute("href") || "#";
+    if (this.dataset.hasOwnProperty('canvas')) {
+        const canvasURL = this.dataset.canvas;
+        this.shadowRoot.innerHTML = `<style>a:hover, a:active { outline: 0; }\na { color: #5197ad; }\na:visited { color: #5197ad; }\na:hover { color: #266477; outline: 0; }</style><a href="${href}" data-canvas="${canvasURL}"><slot></slot></a>`;
+    } else {
+        this.shadowRoot.innerHTML = `<style>a:hover, a:active { outline: 0; }\na { color: #5197ad; }\na:visited { color: #5197ad; }\na:hover { color: #266477; outline: 0; }</style><a href="${href}"><slot></slot></a>`;
+    }
+    this._$a = this.shadowRoot.querySelector("a");
+    this._$a.addEventListener("click", e => {
+      var url = this.getAttribute('href');
+      e.preventDefault();
+      if (document.referrer.startsWith('https://lms.hypothes.is') && this.dataset.hasOwnProperty('canvas')) {
+        // get rid of proxy if it was added
+        var n = this.dataset.canvas.search('https://olin.instructure.com');
+        window.open(this.dataset.canvas.substring(n), '_blank');
+      } else {
+        window.open(url, '_blank');
+      }
+    });
+  }
+  static get observedAttributes() { return ["href"]; }
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue !== newValue) {
+      if (this._$a === null) return;
+      this._$a.setAttribute("href", newValue);
+    }
+  }
+}
+
+customElements.define("a-no-proxy", AnchorNoProxy);
+
+class NoProxy extends HTMLAnchorElement {
+  connectedCallback() {
+    this.addEventListener("click", e => {
+      e.preventDefault();
+      if (document.referrer.startsWith('https://lms.hypothes.is') && this.dataset.hasOwnProperty('canvas')) {
+        // get rid of proxy if it was added
+        var n = this.dataset.canvas.search('https://olin.instructure.com');
+      	window.open(this.dataset.canvas.substring(n), '_blank');
+      } else {
+      	window.open(this.href, '_blank');
+      }
+    });
+  }
+}
+
+customElements.define("no-proxy", NoProxy, { extends: "a" });
+
+class ConfirmLink extends HTMLAnchorElement {
+  connectedCallback() {
+    this.addEventListener("click", e => {
+      const result = confirm(`Are you sure you want to go to '${this.href}'?`);
+      if (!result) e.preventDefault();
+    });
+  }
+}
+
+customElements.define("confirm-link", ConfirmLink, { extends: "a" });
+
+</script>
+
+<!-- begin _includes/seo.html --><title>Assignment 3 - Data Structures Spring 2024 @ Olin College</title>
+<meta name="description" content="Website">
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Data Structures Spring 2024 @ Olin College">
+<meta property="og:title" content="Assignment 3">
+<meta property="og:url" content="/assignments/assignment_03.html">
+
+
+  <meta property="og:description" content="Website">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="canonical" href="/assignments/assignment_03.html">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Data Structures Spring 2024 @ Olin College Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  <script>MathJax={"tex":{"inlineMath":[["$","$"],["\\(","\\)"]],"displayMath":[["$$","$$"],["\\[","\\]"]]},"svg":{"fontCache":"global"}}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="https://qeacourse.github.io/RoboNinjaWarrior/website_graphics/olinlogo.png" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Data Structures Spring 2024 @ Olin College
+          
+        </a>
+        <ul class="visible-links"></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Assignment 3">
+    
+    
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Assignment 3
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title">
+<i class="fas fa-file-alt"></i> On this page</h4></header>
+	      
+                <ul class="toc__menu">
+  <li><a href="#getting-started">Getting Started</a></li>
+  <li><a href="#representing-graphs">Representing Graphs</a></li>
+  <li><a href="#creating-a-priority-queue">Creating a Priority Queue</a></li>
+  <li><a href="#searching">Searching</a></li>
+  <li><a href="#solving-problems-with-dijkstra">Solving Problems with Dijkstra</a></li>
+  <li><a href="#turning-in-your-code">Turning in your Code</a></li>
+  <li><a href="#assessment">Assessment</a></li>
+</ul>
+	      	
+            </nav>
+          </aside>
+        
+        <h2 id="getting-started">Getting Started</h2>
+
+<p>You should fork this base <a href="https://github.com/OlinDSA2024/Assignment03">Assignment03 repo</a>.  If you want your repo to be private, please make sure to add me, <code class="language-plaintext highlighter-rouge">paulruvolo</code>, as a collaborator for when you turn in your work.</p>
+
+<h2 id="representing-graphs">Representing Graphs</h2>
+
+<p>Create a Kotlin class to represent graphs a directed, weighted graph.  Your graph should implement the <code class="language-plaintext highlighter-rouge">Graph&lt;VertexType&gt;</code> interface (in the base repo).</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * This is a simple ``Graph`` that represents a directed graph
+ * @param VertexType the representation of a vertex in the graph
+ */</span>
+<span class="kd">interface</span> <span class="nc">Graph</span><span class="p">&lt;</span><span class="nc">VertexType</span><span class="p">&gt;</span> <span class="p">{</span>
+    <span class="cm">/**
+     * @return the vertices in the graph
+     */</span>
+    <span class="k">fun</span> <span class="nf">getVertices</span><span class="p">():</span> <span class="nc">Set</span><span class="p">&lt;</span><span class="nc">VertexType</span><span class="p">&gt;</span>
+
+    <span class="cm">/**
+     * Add an
+     */</span>
+    <span class="k">fun</span> <span class="nf">addEdge</span><span class="p">(</span><span class="n">from</span><span class="p">:</span> <span class="nc">VertexType</span><span class="p">,</span> <span class="n">to</span><span class="p">:</span> <span class="nc">VertexType</span><span class="p">,</span> <span class="n">cost</span><span class="p">:</span> <span class="nc">Double</span><span class="p">)</span>
+
+    <span class="cm">/**
+     *
+     */</span>
+    <span class="k">fun</span> <span class="nf">getEdges</span><span class="p">(</span><span class="n">from</span><span class="p">:</span> <span class="nc">VertexType</span><span class="p">):</span> <span class="nc">Map</span><span class="p">&lt;</span><span class="nc">VertexType</span><span class="p">,</span> <span class="nc">Double</span><span class="p">&gt;</span>
+
+    <span class="cm">/**
+     * Remove all edges and vertices from the graph
+     */</span>
+    <span class="k">fun</span> <span class="nf">clear</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>You should be able to retrieve a collection of vertices in the graph (e.g., you might maintain a <code class="language-plaintext highlighter-rouge">MutableList</code> or a <code class="language-plaintext highlighter-rouge">Mutable</code> set that contains all of your vertices.)</li>
+  <li>Given a vertex, $v$, you should be able to retrieve a collection of vertices that are neighbors of $v$ (that is any vertex $m$ such that there exists an edge $v \rightarrow m$).</li>
+</ul>
+
+<h2 id="creating-a-priority-queue">Creating a Priority Queue</h2>
+
+<p>Create a data structure called <a href="https://en.wikipedia.org/wiki/Priority_queue"><code class="language-plaintext highlighter-rouge">PriorityQueue</code></a> that supports the following operations (this interface is already in the base repo).</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * ``MinPriorityQueue`` maintains a priority queue where the lower
+ *  the priority value, the sooner the element will be removed from
+ *  the queue.
+ *  @param T the representation of the items in the queue
+ */</span>
+<span class="kd">interface</span> <span class="nc">MinPriorityQueue</span><span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="p">{</span>
+    <span class="cm">/**
+     * @return true if the queue is empty, false otherwise
+     */</span>
+    <span class="k">fun</span> <span class="nf">isEmpty</span><span class="p">():</span> <span class="nc">Boolean</span>
+
+    <span class="cm">/**
+     * Add [elem] with at level [priority]
+     */</span>
+    <span class="k">fun</span> <span class="nf">addWithPriority</span><span class="p">(</span><span class="n">elem</span><span class="p">:</span> <span class="nc">T</span><span class="p">,</span> <span class="n">priority</span><span class="p">:</span> <span class="nc">Double</span><span class="p">)</span>
+
+    <span class="cm">/**
+     * Get the next (lowest priority) element.
+     * @return the next element in terms of priority.  If empty, return null.
+     */</span>
+    <span class="k">fun</span> <span class="nf">next</span><span class="p">():</span> <span class="nc">T</span><span class="p">?</span>
+
+    <span class="cm">/**
+     * Adjust the priority of the given element
+     * @param elem whose priority should change
+     * @param newPriority the priority to use for the element
+     *   the lower the priority the earlier the element int
+     *   the order.
+     */</span>
+    <span class="k">fun</span> <span class="nf">adjustPriority</span><span class="p">(</span><span class="n">elem</span><span class="p">:</span> <span class="nc">T</span><span class="p">,</span> <span class="n">newPriority</span><span class="p">:</span> <span class="nc">Double</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In order to implement your priority queue, you’ll want to create a <code class="language-plaintext highlighter-rouge">MinHeap</code>.  For your <code class="language-plaintext highlighter-rouge">MinHeap</code> you can either build it from scratch (e.g., using <a href="https://en.wikipedia.org/wiki/Heap_(data_structure)">this Wikipedia page</a> as a guide) or you can build off (or probably just use) the reference implementation <a href="https://github.com/OlinDSA2024/Assignment03/blob/main/src/main/kotlin/MinHeap.kt">here</a>.  The priority queue will be a pretty thin wrapper on top op the heap.</p>
+
+<h2 id="searching">Searching</h2>
+
+<p>Implement Dijkstra’s algorithm to search through a graph for the shortest path.  Your algorithm should return the shortest path (not just the cost) between a given start node and a given destination node.  If no path exists between the two nodes, return <code class="language-plaintext highlighter-rouge">null</code>.</p>
+
+<h2 id="solving-problems-with-dijkstra">Solving Problems with Dijkstra</h2>
+
+<p>Dijkstra can be used to solve a bunch of problems.  Here are some you might want to try for practice.  Choose at least one of these options.</p>
+
+<ul>
+  <li>
+<a href="https://projecteuler.net/problem=81">Project Euler Problem 81</a> (also look at 82 and 83 for harder variants)</li>
+  <li><a href="https://inginious.org/course/competitive-programming/graphs-maze">Implement a Maze Solver</a></li>
+  <li>Create a graph that represents the cost (however you want to define it) to travel between particular various cities (you choose which ones).  Compute some shortest paths on this graph using your Dijkstra implementation.  If you want to define a map on a different level of granularity (e.g., city streets) that is cool too!</li>
+</ul>
+
+<h2 id="turning-in-your-code">Turning in your Code</h2>
+
+<p>Submit the fork of the base <code class="language-plaintext highlighter-rouge">Assignment03</code> repo.</p>
+
+<h2 id="assessment">Assessment</h2>
+
+<p>See the rubric on Canvas.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+      </footer>
+
+      
+
+      
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">© 2024 Data Structures Spring 2024 @ Olin College.</div>
+
+      </footer>
+    </div>
+
+    <script src="/assets/js/copyCode.js"></script>
+
+
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

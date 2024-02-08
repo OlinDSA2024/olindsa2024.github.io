@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.17.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+--><html lang="en" class="no-js">
+  <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+
+<script>
+class AnchorNoProxy extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this._$a = null;
+  }
+  connectedCallback() {
+    const href = this.getAttribute("href") || "#";
+    if (this.dataset.hasOwnProperty('canvas')) {
+        const canvasURL = this.dataset.canvas;
+        this.shadowRoot.innerHTML = `<style>a:hover, a:active { outline: 0; }\na { color: #5197ad; }\na:visited { color: #5197ad; }\na:hover { color: #266477; outline: 0; }</style><a href="${href}" data-canvas="${canvasURL}"><slot></slot></a>`;
+    } else {
+        this.shadowRoot.innerHTML = `<style>a:hover, a:active { outline: 0; }\na { color: #5197ad; }\na:visited { color: #5197ad; }\na:hover { color: #266477; outline: 0; }</style><a href="${href}"><slot></slot></a>`;
+    }
+    this._$a = this.shadowRoot.querySelector("a");
+    this._$a.addEventListener("click", e => {
+      var url = this.getAttribute('href');
+      e.preventDefault();
+      if (document.referrer.startsWith('https://lms.hypothes.is') && this.dataset.hasOwnProperty('canvas')) {
+        // get rid of proxy if it was added
+        var n = this.dataset.canvas.search('https://olin.instructure.com');
+        window.open(this.dataset.canvas.substring(n), '_blank');
+      } else {
+        window.open(url, '_blank');
+      }
+    });
+  }
+  static get observedAttributes() { return ["href"]; }
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue !== newValue) {
+      if (this._$a === null) return;
+      this._$a.setAttribute("href", newValue);
+    }
+  }
+}
+
+customElements.define("a-no-proxy", AnchorNoProxy);
+
+class NoProxy extends HTMLAnchorElement {
+  connectedCallback() {
+    this.addEventListener("click", e => {
+      e.preventDefault();
+      if (document.referrer.startsWith('https://lms.hypothes.is') && this.dataset.hasOwnProperty('canvas')) {
+        // get rid of proxy if it was added
+        var n = this.dataset.canvas.search('https://olin.instructure.com');
+      	window.open(this.dataset.canvas.substring(n), '_blank');
+      } else {
+      	window.open(this.href, '_blank');
+      }
+    });
+  }
+}
+
+customElements.define("no-proxy", NoProxy, { extends: "a" });
+
+class ConfirmLink extends HTMLAnchorElement {
+  connectedCallback() {
+    this.addEventListener("click", e => {
+      const result = confirm(`Are you sure you want to go to '${this.href}'?`);
+      if (!result) e.preventDefault();
+    });
+  }
+}
+
+customElements.define("confirm-link", ConfirmLink, { extends: "a" });
+
+</script>
+
+<!-- begin _includes/seo.html --><title>Day 2: Greedy Algorithms Teaser, Order of Growth, and Some Kotlin - Data Structures Spring 2024 @ Olin College</title>
+<meta name="description" content="Website">
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Data Structures Spring 2024 @ Olin College">
+<meta property="og:title" content="Day 2: Greedy Algorithms Teaser, Order of Growth, and Some Kotlin">
+<meta property="og:url" content="/in_class/day02.html">
+
+
+  <meta property="og:description" content="Website">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="canonical" href="/in_class/day02.html">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Data Structures Spring 2024 @ Olin College Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  <script>MathJax={"tex":{"inlineMath":[["$","$"],["\\(","\\)"]],"displayMath":[["$$","$$"],["\\[","\\]"]]},"svg":{"fontCache":"global"}}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="https://qeacourse.github.io/RoboNinjaWarrior/website_graphics/olinlogo.png" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Data Structures Spring 2024 @ Olin College
+          
+        </a>
+        <ul class="visible-links"></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Day 2: Greedy Algorithms Teaser, Order of Growth, and Some Kotlin">
+    
+    
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Day 2: Greedy Algorithms Teaser, Order of Growth, and Some Kotlin
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title">
+<i class="fas fa-file-alt"></i> On this page</h4></header>
+	      
+                <ul class="toc__menu">
+  <li><a href="#announcements-and-reminders">Announcements and Reminders</a></li>
+  <li><a href="#algorithm-design-patterns-whirlwind-tour">Algorithm Design Patterns Whirlwind Tour</a></li>
+  <li><a href="#o-and-friends">O() and Friends</a></li>
+  <li><a href="#kotlin-versus-python">Kotlin versus Python</a></li>
+  <li><a href="#work-on-kotlin-basics">Work on Kotlin Basics</a></li>
+</ul>
+	      	
+            </nav>
+          </aside>
+        
+        <h2 id="announcements-and-reminders">Announcements and Reminders</h2>
+
+<ul>
+  <li>If you want a supplemental book to the course material, I recommend you get <a href="https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/">this book</a>.  I’ll be sampling an exercise from it here or there, and it has comprehensive explanations of many of the course topics.  That said, I won’t be assigning reading from it (any readings will be ones that are freely available on the web).</li>
+</ul>
+
+<h2 id="algorithm-design-patterns-whirlwind-tour">Algorithm Design Patterns Whirlwind Tour</h2>
+
+<p>We’re going to take a few classes to get a feel for the various algorithmic design patterns we will meet this semester.  During class 1, we met the design pattern <em>divide and conquer</em>.  Today, we’ll be learning about greedy algorithms.</p>
+
+<p>Wikipedia has a concise definition of a greedy algorithm.</p>
+
+<blockquote>
+  <p>A greedy algorithm is any algorithm that follows the problem-solving heuristic of making the locally optimal choice at each stage.</p>
+</blockquote>
+
+<p>The question becomes, does the greedy strategy lead to a solution to the problem?  In some cases it may lead to a solution, and in other cases it may lead to a less optimal solution.</p>
+
+<p>Here are some problems to get you thinking.</p>
+
+<blockquote>
+  <p>Suppose you have a budget of $N$ dollars to purchase flour and that flour can be purchased on day $i$ for $x_i$ dollars per pound.  Determine the maximum pounds of flour you can purchase with your budget.  Is your algorithm a greedy algorithm?</p>
+</blockquote>
+
+<blockquote>
+  <p>Suppose you are planning a road trip of $N$ miles.  Your car can go $M$ miles on a full tank of gas.  There are gas stations located at mile $x_1, x_2, \ldots, x_k$ along the route.  Come up with a strategy for choosing which gas stations to fill your tank at such that you minimize the number of gas station stops.  Is your strategy guaranteed to find the minimum number?  Make an argument as to why or why not.</p>
+</blockquote>
+
+<blockquote>
+  <p>Determine a greedy algorithm for making change for $N$ cents using quarters, dimes, nickels, and pennies.  Does your greedy algorithm use the fewest coins possible (make an intuitive argument, no proof necessary)?</p>
+</blockquote>
+
+<blockquote>
+  <p>If the US began minting a 20-cent coin, would a greedy algorithm still solve the optimal change-making problem?</p>
+</blockquote>
+
+<h2 id="o-and-friends">O() and Friends</h2>
+
+<p>We say that $f(x) = O(g(x))$ if there exists a positive real number $M$ and a real number $x_0$ such that, $|f(x)| \leq M g(x)~\mbox{for all}~x\geq x_0$.</p>
+
+<p>$f(x) = \Omega(g(x))$ if there exists a positive real number $M$ and a real number $x_0$ such that, $|f(x)|\geq M g(x)~\mbox{for all}~x \geq x_0$</p>
+
+<p>We say that $f(x) = \Theta(g(x))$ if $f(x) = O(g(x))$ and $f(x) = \Omega(g(x))$.</p>
+
+<p>Here is a handy figure from “Introduction to Algorithms” by Cormen, Leiserson, Rivest, and Stein.</p>
+
+<p><img src="/images/bigoandfriends.png" alt="This figure shows a grahical depiction of O(g(n)) (left), Omega(g(n)) (center), and Theta(g(n)) (right)"></p>
+
+<p>With your group, explain how the formal definitions (given earlier) relate to these pictures.</p>
+
+<h3 id="practice-problems">Practice Problems</h3>
+
+<ol>
+  <li>Show that $10000 n = O(n^2)$</li>
+  <li>Show that $n^2 \neq O(n)$.</li>
+  <li>Show that $\frac{3^n}{10000} = \Omega(2^n)$</li>
+  <li>Show that any polynomial is $O(2^n)$</li>
+</ol>
+
+<p>This problem is from former Olin Professor Allen Downey’s Think Python second edition.   In this context, order of growth can be understood to mean $\Theta$.  I made one modification to part 3 of the exercise.</p>
+
+<ul>
+  <li>What is the order of growth of $n^3 + n^2$? What about $1000000 n^3 + n^2$? What about $n^3 + 1000000 n^2$?</li>
+  <li>What is the order of growth of $(n^2 + n)(n + 1)$?</li>
+  <li>If $f$ is in $O(g)$ and $g$ is a continuously increasing functions that grows infinitely large as $n \rightarrow \infty$, what can we say about $af+b$, where $a$ and $b$ are constants?</li>
+  <li>If $f_1$ and $f_2$ are in $O(g)$, what can we say about $f_1 + f_2$?</li>
+  <li>If $f_1$ is in $O(g)$ and $f_2$ is in $O(h)$, what can we say about $f_1 + f_2$?</li>
+  <li>If $f_1$ is in $O(g)$ and $f_2$ is $O(h)$, what can we say about $f_1 \times f_2$?</li>
+</ul>
+
+<h2 id="kotlin-versus-python">Kotlin versus Python</h2>
+
+<p>I wanted to take a few minutes to discuss the ways that Kotlin compares with a language that we all know: Python.</p>
+
+<p>Key differences:</p>
+<ul>
+  <li>Execution Model: Interpreted (Python) versus Compiled (Kotlin)</li>
+  <li>Type System: Dynamic typing (Python) versus Static Typing (Kotlin)</li>
+  <li>Interoperability: call C/C++ code (Python) versus calling Java (Kotlin)</li>
+  <li>External dependencies: pip / Anaconda / … (Python) versus Gradle (Kotlin)</li>
+  <li>Syntax: indentation to show code nesting (Python) versus Curly braces (Kotlin)</li>
+</ul>
+
+<h2 id="work-on-kotlin-basics">Work on Kotlin Basics</h2>
+
+<p>We’ll take some time to work on the assignment.  This will give us a chance to discuss Kotlin, figure out bugs with your environment, etc.  We can do some knowledge sharing amongst the class (interesting resources or other things you found).</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+      </footer>
+
+      
+
+      
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">© 2024 Data Structures Spring 2024 @ Olin College.</div>
+
+      </footer>
+    </div>
+
+    <script src="/assets/js/copyCode.js"></script>
+
+
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
