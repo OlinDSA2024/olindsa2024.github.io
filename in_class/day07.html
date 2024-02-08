@@ -162,7 +162,8 @@ customElements.define("confirm-link", ConfirmLink, { extends: "a" });
 
 <!-- end custom head snippets -->
 
-  </head>
+  <script>MathJax={"tex":{"inlineMath":[["$","$"],["\\(","\\)"]],"displayMath":[["$$","$$"],["\\[","\\]"]]},"svg":{"fontCache":"global"}}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
 
   <body class="layout--single">
     <nav class="skip-links">
@@ -236,6 +237,8 @@ customElements.define("confirm-link", ConfirmLink, { extends: "a" });
 	      
                 <ul class="toc__menu">
   <li><a href="#directed-acyclic-graphs">Directed-Acyclic Graphs</a></li>
+  <li><a href="#dijkstras-algorithm">Dijkstra’s Algorithm</a></li>
+  <li><a href="#min-heaps">Min-Heaps</a></li>
 </ul>
 	      	
             </nav>
@@ -246,6 +249,39 @@ customElements.define("confirm-link", ConfirmLink, { extends: "a" });
 <p>Starting off, let’s revisit a problem that most of you didn’t get to from last class.  This is the problem of determining of a given directed graph is acyclic. To motivate this, let’s consider the following graph.</p>
 
 <p><img class="mermaid" src="https://mermaid.ink/svg/eyJjb2RlIjoiZ3JhcGggTFJcbkEgLS0-IEJcbkIgLS0-IENcbkEgLS0-IENcbkMgLS0-IERcbkIgLS0-IERcbkEgLS0-IEVcbkQgLS0-IEUiLCJtZXJtYWlkIjpudWxsfQ"></p>
+
+<p>Perhaps unsurprisingly, a directed graph is a directed acyclic graph (<a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph">DAG</a>) if it contains no cycles.  Cycles are paths through the graph that repeat vertices.</p>
+
+<p>One of the supplementary problems in the last class is an algorithm known as Kahn’s algorithm for determining if a graph is a DAG.  More specifically, it computes a topological sorting of the vertices of the graph, and if a sorting exists, the graph has no cycles.  A topological sorting of a graph is an ordering of the graph’s vertices $v_1, v_2, \ldots, v_n$ such that the edge $v_i \rightarrow v_j$ can only exist if $i &lt; j$.</p>
+
+<p>Here is pseudocode for the algorithm Kahn’s algorithm.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>L ← Empty list that will contain the sorted elements
+S ← Set of all nodes with no incoming edge
+
+while S is not empty do
+    remove a node n from S
+    add n to L
+    for each node m with an edge e from n to m do
+        remove edge e from the graph
+        if m has no other incoming edges then
+            insert m into S
+
+if graph has edges then
+    return error   (graph has at least one cycle)
+else 
+    return L   (a topologically sorted order)
+</code></pre></div></div>
+
+<p>Let’s go through this example together to see how Kahn’s algorithm works.</p>
+
+<p>Let’s try Kahn’s algorithm on a graph that does contain a cycle to see what happens.</p>
+
+<p><img class="mermaid" src="https://mermaid.ink/svg/eyJjb2RlIjoiZ3JhcGggTFJcbkEgLS0-IEJcbkIgLS0-IENcbkMgLS0-IERcbkMgLS0-IEJcbkEgLS0-IEQiLCJtZXJtYWlkIjpudWxsfQ"></p>
+
+<h2 id="dijkstras-algorithm">Dijkstra’s Algorithm</h2>
+
+<h2 id="min-heaps">Min-Heaps</h2>
 
         
       </section>
