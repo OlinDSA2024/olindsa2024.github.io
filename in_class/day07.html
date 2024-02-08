@@ -281,7 +281,17 @@ else
 
 <h2 id="dijkstras-algorithm">Dijkstra’s Algorithm</h2>
 
+<p>I have some companion slides to go along with the presentation of Dijkstra’s algorithm.  I’ll have these up on the projector, but you can <a href="/in_class/graphsearch_slides.pdf">access the slides</a> using this link.</p>
+
+<p>Before we introduce Dijkstra’s algorithm, we need to briefly introduce the idea of weighted graphs.  Imagine that in addition to storing the neighbors of each vertex in our graph, we also store an edge weight.  Here is what a graph might look like with edge weights added.</p>
+
+<p><img class="mermaid" src="https://mermaid.ink/svg/eyJjb2RlIjoiZ3JhcGggTFJcbkEgLS0yLS0-IEJcbkIgLS0zLS0-IENcbkEgLS00LS0-IENcbkMgLS0zLS0-IERcbkIgLS0xLS0-IERcbkEgLS0xMC0tPiBFXG5EIC0tNy0tPiBFIiwibWVybWFpZCI6bnVsbH0"></p>
+
+<p>As an aside, edge weights could encode a bunch of different things in our graph.  In computer vision, edge weights can encode the similarity between neighboring parts of an image and this graph can then be processed to segment parts of an image.  Another classical example is graph traversal where we might want to find the shortest path through a graph connecting $v_{start}$ to $v_{goal}$. In this setting, the cost of a path is defined by the sum of edge weights along the path.</p>
+
 <h2 id="min-heaps">Min-Heaps</h2>
+
+<p>A <a href="https://en.wikipedia.org/wiki/Binary_heap">binary heap</a> is a data structure that is very useful for implementing the priority queue will need for Dijkstra.  Before getting started with learning about what a Heap is, let’s talk about the running time of various operations on a heap.</p>
 
         
       </section>
