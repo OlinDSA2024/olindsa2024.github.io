@@ -6,8 +6,6 @@ Gemfile.lock
 *.mat
 *.zip
 *.csv
-*Companion*.html
-*.html
 
 ## source https://github.com/github/gitignore/blob/master/TeX.gitignore
 Icon*
@@ -26,8 +24,6 @@ Icon*
 *.bbl
 *.dvi
 *.blg
-
-_site
 
 ## Build tool auxiliary files:
 *.fdb_latexmk
