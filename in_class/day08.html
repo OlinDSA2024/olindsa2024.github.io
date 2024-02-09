@@ -78,7 +78,7 @@ customElements.define("confirm-link", ConfirmLink, { extends: "a" });
 
 </script>
 
-<!-- begin _includes/seo.html --><title>Data Structures and Algorthms Spring 2024 - Data Structures Spring 2024 @ Olin College</title>
+<!-- begin _includes/seo.html --><title>Day 8: A-Star Search and Intro to Sorting - Data Structures Spring 2024 @ Olin College</title>
 <meta name="description" content="Website">
 
 
@@ -86,8 +86,8 @@ customElements.define("confirm-link", ConfirmLink, { extends: "a" });
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Data Structures Spring 2024 @ Olin College">
-<meta property="og:title" content="Data Structures and Algorthms Spring 2024">
-<meta property="og:url" content="/">
+<meta property="og:title" content="Day 8: A-Star Search and Intro to Sorting">
+<meta property="og:url" content="/in_class/day08.html">
 
 
   <meta property="og:description" content="Website">
@@ -103,7 +103,7 @@ customElements.define("confirm-link", ConfirmLink, { extends: "a" });
 
 
 
-<link rel="canonical" href="/">
+<link rel="canonical" href="/in_class/day08.html">
 
 
 
@@ -162,9 +162,10 @@ customElements.define("confirm-link", ConfirmLink, { extends: "a" });
 
 <!-- end custom head snippets -->
 
-  </head>
+  <script>MathJax={"tex":{"inlineMath":[["$","$"],["\\(","\\)"]],"displayMath":[["$$","$$"],["\\[","\\]"]]},"svg":{"fontCache":"global"}}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
 
-  <body class="layout--splash">
+  <body class="layout--single">
     <nav class="skip-links">
   <h2 class="screen-reader-text">Skip links</h2>
   <ul>
@@ -206,172 +207,96 @@ customElements.define("confirm-link", ConfirmLink, { extends: "a" });
 
     <div class="initial-content">
       
-  
-
-
-
-
-
-
-
-
-
-
-
-<div class="page__hero--overlay" style="background-color: #000; ">
-  
-    <div class="wrapper">
-      <h1 id="page-title" class="page__title" itemprop="headline">
-        
-          Data Structures and Algorthms Spring 2024
-
-        
-      </h1>
-      
-      
-      
-      
-    </div>
-  
-  
-</div>
 
 
 
 <div id="main" role="main">
-  <article class="splash" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Data Structures and Algorthms Spring 2024">
+  
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Day 8: A-Star Search and Intro to Sorting">
     
     
     
 
-    <section class="page__content" itemprop="text">
-      <h2 id="how-tos">How-tos</h2>
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Day 8: A-Star Search and Intro to Sorting
+</h1>
+          
+        </header>
+      
 
-<ul>
-  <li><a href="how_to/setting_up_kotlin">Get set with Kotlin</a></li>
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title">
+<i class="fas fa-file-alt"></i> On this page</h4></header>
+	      
+                <ul class="toc__menu">
+  <li><a href="#a-star-search">A-Star Search</a></li>
+  <li><a href="#sorting">Sorting</a></li>
+  <li><a href="#complexity-of-sorting-algorithms">Complexity of Sorting Algorithms</a></li>
 </ul>
+	      	
+            </nav>
+          </aside>
+        
+        <p>This is a work in progress.</p>
 
-<h2 id="in-class-activities">In-class Activities</h2>
+<h2 id="a-star-search">A-Star Search</h2>
 
-<p><a href="https://github.com/OlinDSA2024/DSA2024InClass">Sample solutions for in-class assignments</a> will be made available on Github.</p>
+<h2 id="sorting">Sorting</h2>
 
-<table>
-  <thead>
-    <tr>
-      <th>Day #</th>
-      <th>Activity</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td><a href="in_class/day01">Course intro and welcome to DSA!</a></td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td><a href="in_class/day02">Greedy Algorithms Teaser, Order of Growth, and Some Kotlin</a></td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td><a href="in_class/day03">Arrays, Linked Lists, and Intro to Abstract Datatypes</a></td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td><a href="in_class/day04">Implementing a Stack in Kotlin</a></td>
-    </tr>
-    <tr>
-      <td>5</td>
-      <td><a href="in_class/day05">Revisiting Arrays and Intro to Graphs</a></td>
-    </tr>
-    <tr>
-      <td>6</td>
-      <td><a href="in_class/day06">Graph data structures, depth-first and breadth-first search</a></td>
-    </tr>
-    <tr>
-      <td>7</td>
-      <td><a href="in_class/day07">DAGs, Dijkstra’s Algorithm, and Heaps</a></td>
-    </tr>
-    <tr>
-      <td>8</td>
-      <td><a href="in_class/day08">A-Star and Intro to Sorting</a></td>
-    </tr>
-  </tbody>
-</table>
+<h3 id="selection-sort">Selection sort</h3>
 
-<!--
-| 8     | A-Star and other shortest path algorithms |
-| 9     | Greedy algorithms |
-| 10    | Hash maps |
-| 11    | String matching algorithms |
-| 12    | String matching algorithms \(continued)
-| 13    | Graph analysis via Pagerank |
-| 14    | Dynamic programming and proofs by induction  |
-| 15    | Dynamic programming and proofs by induction \(continued) |
-| 16    | Sorting |
-| 17    | Matrix multiplication |
-| 18    | Trees |
-| 19    | Linear and binary search |
-| 20    | Heaps |
-| 21    | KD-Trees |
-| 22    | Heaps |
-| 23    | Backtracking |
-| 24    | Optimization algorithms overview |
-| 25    | Deep dive studio day |
-| 26    | Deep dive studio day |
--->
+<h3 id="bubble-sort">Bubble Sort</h3>
 
-<!--
-## Motivating Examples
+<h3 id="merge-sort">Merge sort</h3>
 
-* Genomic analysis
-* Machine learning
-* Bigdata
-* Computer networks
-* Navigation (routing)
-* Encryption
--->
+<h3 id="heap-sort">Heap sort</h3>
 
-<!--
-## Some problems / extensions
+<h2 id="complexity-of-sorting-algorithms">Complexity of Sorting Algorithms</h2>
 
-* Peak finder (MIT OCW motivating problem)
-* 15 puzzle or 2x2 Rubik's cube
-* Beyond worst case complexity
-* Approximation algorithms
--->
+<h3 id="analyzing-selection-sort">Analyzing Selection Sort</h3>
 
-<h2 id="assignments">Assignments</h2>
+<p>Let’s start by analyzing the worst case running time of selection sort.  Compute the number of operations necessary to run selection sort in the worst case.  Determine $\Theta$.</p>
 
-<table>
-  <thead>
-    <tr>
-      <th>Due at beginning of class #</th>
-      <th>Assignment</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>3</td>
-      <td><a href="assignments/assignment_01">Hello Kotlin and course entrance survey</a></td>
-    </tr>
-    <tr>
-      <td>6</td>
-      <td><a href="assignments/assignment_02">Stacks, Queues, and Linked Lists</a></td>
-    </tr>
-    <tr>
-      <td>8</td>
-      <td><a href="assignments/assignment_03">Graphs and graph traversal</a></td>
-    </tr>
-    <tr>
-      <td>10</td>
-      <td><a href="assignments/assignment_04">All about sorting (tentative)</a></td>
-    </tr>
-  </tbody>
-</table>
+<h3 id="analyzing-merge-sort">Analyzing Merge Sort</h3>
 
-    </section>
+<h3 id="master-theorem">Master Theorem</h3>
+
+<p>A generalizable recipe for analyzing recursive algorithms like this is the [master theorem](https://en.wikipedia.org/wiki/Master_theorem_(analysis_of_algorithms).  Reanalyze merge sort using the master theorem.  You may find the following special cases of the master theorem useful.</p>
+
+<p>$T(n) = a T(n/b) + n$</p>
+
+<p>Has a run time $\Theta(n^{\log_{b}{a}})$ if $\log_{b}{a} &gt; 1$.</p>
+
+<p>Has a run time $\Theta(n \log^{k+1} n)$ if $n^{\log_{b}{a}} \log{k} = \Theta(n)$.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+      </footer>
+
+      
+
+      
+    </div>
+
+    
   </article>
+
+  
+  
 </div>
 
     </div>

@@ -78,7 +78,7 @@ customElements.define("confirm-link", ConfirmLink, { extends: "a" });
 
 </script>
 
-<!-- begin _includes/seo.html --><title>Data Structures and Algorthms Spring 2024 - Data Structures Spring 2024 @ Olin College</title>
+<!-- begin _includes/seo.html --><title>Assignment 4 - Data Structures Spring 2024 @ Olin College</title>
 <meta name="description" content="Website">
 
 
@@ -86,8 +86,8 @@ customElements.define("confirm-link", ConfirmLink, { extends: "a" });
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="Data Structures Spring 2024 @ Olin College">
-<meta property="og:title" content="Data Structures and Algorthms Spring 2024">
-<meta property="og:url" content="/">
+<meta property="og:title" content="Assignment 4">
+<meta property="og:url" content="/assignments/assignment_04.html">
 
 
   <meta property="og:description" content="Website">
@@ -103,7 +103,7 @@ customElements.define("confirm-link", ConfirmLink, { extends: "a" });
 
 
 
-<link rel="canonical" href="/">
+<link rel="canonical" href="/assignments/assignment_04.html">
 
 
 
@@ -162,9 +162,10 @@ customElements.define("confirm-link", ConfirmLink, { extends: "a" });
 
 <!-- end custom head snippets -->
 
-  </head>
+  <script>MathJax={"tex":{"inlineMath":[["$","$"],["\\(","\\)"]],"displayMath":[["$$","$$"],["\\[","\\]"]]},"svg":{"fontCache":"global"}}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
 
-  <body class="layout--splash">
+  <body class="layout--single">
     <nav class="skip-links">
   <h2 class="screen-reader-text">Skip links</h2>
   <ul>
@@ -206,172 +207,102 @@ customElements.define("confirm-link", ConfirmLink, { extends: "a" });
 
     <div class="initial-content">
       
-  
-
-
-
-
-
-
-
-
-
-
-
-<div class="page__hero--overlay" style="background-color: #000; ">
-  
-    <div class="wrapper">
-      <h1 id="page-title" class="page__title" itemprop="headline">
-        
-          Data Structures and Algorthms Spring 2024
-
-        
-      </h1>
-      
-      
-      
-      
-    </div>
-  
-  
-</div>
 
 
 
 <div id="main" role="main">
-  <article class="splash" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Data Structures and Algorthms Spring 2024">
+  
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Assignment 4">
     
     
     
 
-    <section class="page__content" itemprop="text">
-      <h2 id="how-tos">How-tos</h2>
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Assignment 4
+</h1>
+          
+        </header>
+      
 
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title">
+<i class="fas fa-file-alt"></i> On this page</h4></header>
+	      
+                <ul class="toc__menu">
+  <li><a href="#overview">Overview</a></li>
+  <li><a href="#sorting-algorithm-implementation-and-complexity-analysis">Sorting Algorithm Implementation and Complexity Analysis</a></li>
+  <li><a href="#sorting-algorithm-benchmarking">Sorting Algorithm Benchmarking</a></li>
+  <li><a href="#new-frontiers-in-sorting">New Frontiers in Sorting?</a></li>
+  <li><a href="#turning-in-your-code">Turning in your Code</a></li>
+  <li><a href="#assessment">Assessment</a></li>
+</ul>
+	      	
+            </nav>
+          </aside>
+        
+        <blockquote>
+  <p>Note: this assignment is still under construction.</p>
+</blockquote>
+
+<h2 id="overview">Overview</h2>
+
+<p>This assignment is all about implementing, benchmarking, and solving problems with sorting algorithms.</p>
+
+<h2 id="sorting-algorithm-implementation-and-complexity-analysis">Sorting Algorithm Implementation and Complexity Analysis</h2>
+
+<p>Implement at least four of the following sorting algorithms.  For each sorting algorithm you implement, provide an analysis f its computational complexity.  At least one of your algorithms should be $\Theta(n \log n)$.</p>
 <ul>
-  <li><a href="how_to/setting_up_kotlin">Get set with Kotlin</a></li>
+  <li>Heap sort</li>
+  <li>Radix sort</li>
+  <li>Insertion sort</li>
+  <li>Selection sort</li>
+  <li>Merge sort</li>
 </ul>
 
-<h2 id="in-class-activities">In-class Activities</h2>
+<h2 id="sorting-algorithm-benchmarking">Sorting Algorithm Benchmarking</h2>
 
-<p><a href="https://github.com/OlinDSA2024/DSA2024InClass">Sample solutions for in-class assignments</a> will be made available on Github.</p>
+<p>Test the performance of your sorting algorithms on sorting different sized lists of numbers.  Present your conclusions as part of a writeup.</p>
 
-<table>
-  <thead>
-    <tr>
-      <th>Day #</th>
-      <th>Activity</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td><a href="in_class/day01">Course intro and welcome to DSA!</a></td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td><a href="in_class/day02">Greedy Algorithms Teaser, Order of Growth, and Some Kotlin</a></td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td><a href="in_class/day03">Arrays, Linked Lists, and Intro to Abstract Datatypes</a></td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td><a href="in_class/day04">Implementing a Stack in Kotlin</a></td>
-    </tr>
-    <tr>
-      <td>5</td>
-      <td><a href="in_class/day05">Revisiting Arrays and Intro to Graphs</a></td>
-    </tr>
-    <tr>
-      <td>6</td>
-      <td><a href="in_class/day06">Graph data structures, depth-first and breadth-first search</a></td>
-    </tr>
-    <tr>
-      <td>7</td>
-      <td><a href="in_class/day07">DAGs, Dijkstra’s Algorithm, and Heaps</a></td>
-    </tr>
-    <tr>
-      <td>8</td>
-      <td><a href="in_class/day08">A-Star and Intro to Sorting</a></td>
-    </tr>
-  </tbody>
-</table>
+<h2 id="new-frontiers-in-sorting">New Frontiers in Sorting?</h2>
 
-<!--
-| 8     | A-Star and other shortest path algorithms |
-| 9     | Greedy algorithms |
-| 10    | Hash maps |
-| 11    | String matching algorithms |
-| 12    | String matching algorithms \(continued)
-| 13    | Graph analysis via Pagerank |
-| 14    | Dynamic programming and proofs by induction  |
-| 15    | Dynamic programming and proofs by induction \(continued) |
-| 16    | Sorting |
-| 17    | Matrix multiplication |
-| 18    | Trees |
-| 19    | Linear and binary search |
-| 20    | Heaps |
-| 21    | KD-Trees |
-| 22    | Heaps |
-| 23    | Backtracking |
-| 24    | Optimization algorithms overview |
-| 25    | Deep dive studio day |
-| 26    | Deep dive studio day |
--->
+<p>Do some research to determine what new problems exist in terms of sorting.  Is this a solved problem or is there a new frontier to discover?</p>
 
-<!--
-## Motivating Examples
+<h2 id="turning-in-your-code">Turning in your Code</h2>
 
-* Genomic analysis
-* Machine learning
-* Bigdata
-* Computer networks
-* Navigation (routing)
-* Encryption
--->
+<p>Submit a link to a repository that has your code and writeup.  Make sure to add me <code class="language-plaintext highlighter-rouge">paulruvolo</code> as a collaborator if the repo is private.</p>
 
-<!--
-## Some problems / extensions
+<h2 id="assessment">Assessment</h2>
 
-* Peak finder (MIT OCW motivating problem)
-* 15 puzzle or 2x2 Rubik's cube
-* Beyond worst case complexity
-* Approximation algorithms
--->
+<p>See the rubric on Canvas.</p>
 
-<h2 id="assignments">Assignments</h2>
+        
+      </section>
 
-<table>
-  <thead>
-    <tr>
-      <th>Due at beginning of class #</th>
-      <th>Assignment</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>3</td>
-      <td><a href="assignments/assignment_01">Hello Kotlin and course entrance survey</a></td>
-    </tr>
-    <tr>
-      <td>6</td>
-      <td><a href="assignments/assignment_02">Stacks, Queues, and Linked Lists</a></td>
-    </tr>
-    <tr>
-      <td>8</td>
-      <td><a href="assignments/assignment_03">Graphs and graph traversal</a></td>
-    </tr>
-    <tr>
-      <td>10</td>
-      <td><a href="assignments/assignment_04">All about sorting (tentative)</a></td>
-    </tr>
-  </tbody>
-</table>
+      <footer class="page__meta">
+        
+        
 
-    </section>
+
+        
+      </footer>
+
+      
+
+      
+    </div>
+
+    
   </article>
+
+  
+  
 </div>
 
     </div>
