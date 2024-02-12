@@ -256,28 +256,86 @@ customElements.define("confirm-link", ConfirmLink, { extends: "a" });
 
 <p>We use the notation $h(v)$ denotes the lower bound on traversing from $v$ to the goal node.  Given this construction, we can modify our pseudocode for Dijkstra’s algorithm from last time to get the A-star algorithm.</p>
 
+<p>Before stating our pseudocode, let’s define what each variable in the program will represent.</p>
+
+<ul>
+  <li>
+<code class="language-plaintext highlighter-rouge">source</code> is our starting vertex in the graph for searching</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">goal</code> is the vertex we are trying to reach</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">prev</code> will be used to reconstruct the optimal path and will map from a vertex to the vertex immediately preceding it on the optimal path from <code class="language-plaintext highlighter-rouge">source</code> to <code class="language-plaintext highlighter-rouge">goal</code>.</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">dist</code> maps from a vertex to the currently known minimum cost path from the start to that vertex</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">queue</code> is our priority queue that we will use to keep track of which vertex to expand next</li>
+</ul>
+
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for each vertex, v that is not the source:
     prev[v] ← UNDEFINED
     dist[v] ← INFINITY
-    queue.addWithPriority(v, INFINITY)
 
-dist[source] ← 0
-f[source]  ← h(source)
-queue.addWithPriority(source, f[source])
+dist[source] ← 0    // note: this is called g in some writeups
+queue.addWithPriority(source, h(source))
 
 while queue is not empty:
-    u ← vertex in queue with min priority
-    remove u from queue
+    u ← queue.popMin()  // gets min and removes it
     if u == goal:
         // reconstruct shortest path from prev
         return
-    for each neighbor v of u still in queue:
+    for each neighbor v of u:
         alt ← dist[u] + edgecost(u, v)
         if alt &lt; dist[v]:
             dist[v] ← alt
-            queue.changePriority(v, alt + h(v))
+            if v in queue:
+                queue.changePriority(v, alt + h(v))
+            else:
+                queue.addWithPriority(v, alt + h(v))
             prev[v] ← u
 </code></pre></div></div>
+
+<p>Key differences with Dijkstra’s algorithm.</p>
+<ul>
+  <li>In A-star, nodes can be expanded multiple times (in Dijkstra’s they can only be expanded once)</li>
+  <li>We make use of a heuristic function to prioritize our search (this can save us time)</li>
+</ul>
+
+<p>Example to do on the board (this is from <a href="https://www.youtube.com/watch?v=DhtSZhakyOo">Pieter Abbeel’s course at Berkeley</a>):</p>
+
+<p><img class="mermaid" src="https://mermaid.ink/svg/eyJjb2RlIjoiZ3JhcGggTFJcblMgLS0xLS0-IEFcblMgLS00LS0-IEJcbkEgLS01LS0-IENcbkEgLS0yLS0-IEJcbkIgLS0yLS0-IENcbkMgLS0zLS0-IEdcbkEgLS0xMi0tPiBHIiwibWVybWFpZCI6bnVsbH0"></p>
+
+<p>This graph has the following heuristic.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Vertex</td>
+      <td>h</td>
+    </tr>
+    <tr>
+      <td>$S$</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <td>$A$</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <td>$B$</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>$C$</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>$G$</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Let’s try to understand why this could make your problem more efficient.</p>
 
 <h2 id="sorting">Sorting</h2>
 
