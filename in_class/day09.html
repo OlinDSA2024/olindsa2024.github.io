@@ -237,6 +237,7 @@ customElements.define("confirm-link", ConfirmLink, { extends: "a" });
 	      
                 <ul class="toc__menu">
   <li><a href="#quick-sort">Quick Sort</a></li>
+  <li><a href="#the-speed-limit-for-comparison-based-sorting">The Speed Limit for Comparison-Based Sorting</a></li>
   <li><a href="#radix-sort">Radix Sort</a></li>
   <li><a href="#more-practice-with-the-master-theorem">More Practice With the Master Theorem</a></li>
 </ul>
@@ -261,15 +262,23 @@ customElements.define("confirm-link", ConfirmLink, { extends: "a" });
 
 <p>Analyzing the runtime of this algorithm is a bit tricky.  Let’s consider a specific case of always choosing the first element as the pivot.  Let’s see what happens with quick sort with this pivot selection rule.</p>
 
+<h2 id="the-speed-limit-for-comparison-based-sorting">The Speed Limit for Comparison-Based Sorting</h2>
+
+<p>TODO</p>
+
 <h2 id="radix-sort">Radix Sort</h2>
 
 <p><a href="https://en.wikipedia.org/wiki/Radix_sort">Radix sort</a> (also called bucket sort) is an interesting algorithm where we don’t perform an explicit comparisons between elements in our list.  We instead sort, e.g. if we are sorting integers, based on comparing the ones digits, then the tens digit, etc.  Let’s check out <a href="https://visualgo.net/en/sorting">the visualization of Radix sort</a> at our favorite website!</p>
 
 <h2 id="more-practice-with-the-master-theorem">More Practice With the Master Theorem</h2>
 
+<p>Before getting started, let’s dig into the <a href="https://en.wikipedia.org/wiki/Master_theorem_(analysis_of_algorithms)">master theorem</a> to make sure we really understand it.</p>
+
 <p><strong>Problem 1</strong> Binary search can be applied to finding an element in a sorted list, by progressively eliminating half of the elements to be searched on each iteration.  Make sure you understand binary search, write a recurrence relation, and solve it using the master theorem.</p>
 
-<p><strong>Problem 2</strong> TBD</p>
+<p><strong>Problem 2</strong> Maximum Contiguous Subsequence (need to write this up)</p>
+
+<p>For more practice we can go to the problems assigned on the homework.</p>
 
         
       </section>
