@@ -264,7 +264,17 @@ customElements.define("confirm-link", ConfirmLink, { extends: "a" });
 
 <h2 id="the-speed-limit-for-comparison-based-sorting">The Speed Limit for Comparison-Based Sorting</h2>
 
-<p>TODO</p>
+<p>(my apologies, this might be hard to understand without having taken discrete math, but we’ll try)</p>
+
+<p>There’s a theorem that states that any algorithm for sorting that works by comparing elements of the list to each other has running time of $\Omega(n \log n)$ (that is the running time can be bounded below by $n \log n$).</p>
+
+<p>To understand this we can think of the problem of sorting as determining which of the $n!$ possible permutations of a list is the right one to obtain the list in sorted order.</p>
+
+<p>We can then think of creating a tree where at each level of the tree we perform a comparison to try to eliminate some of the $n!$ possible permutations.</p>
+
+<p>Let’s say each of our comparison perfectly divides the number of possible permutations that go each direction in our tree in half.  This is what the picture would look like.</p>
+
+<p><img class="mermaid" src="https://mermaid.ink/svg/eyJjb2RlIjoiZ3JhcGggVERcbnJbbiFdIC0tPiBiW24hLzJdXG5yIC0tPiBjW24hLzJdXG5iIC0tPiBlW24hLzRdXG5iIC0tPiBmW24hLzRdXG5jIC0tPiBnW24hLzRdXG5jIC0tPiBoW24hLzRdIiwibWVybWFpZCI6bnVsbH0"></p>
 
 <h2 id="radix-sort">Radix Sort</h2>
 
@@ -276,9 +286,9 @@ customElements.define("confirm-link", ConfirmLink, { extends: "a" });
 
 <p><strong>Problem 1</strong> Binary search can be applied to finding an element in a sorted list, by progressively eliminating half of the elements to be searched on each iteration.  Make sure you understand binary search, write a recurrence relation, and solve it using the master theorem.</p>
 
-<p><strong>Problem 2</strong> Maximum Contiguous Subsequence (need to write this up)</p>
+<p><strong>Problem 2 (option 1)</strong> For more practice we can go to the problems assigned on the homework.</p>
 
-<p>For more practice we can go to the problems assigned on the homework.</p>
+<p><strong>Problem 2 (option 2)</strong> If you’d rather try a new problem.  See if you can solve the maximum contiguous subsequence problem by determining a divide and conquer algorithm to solve it and then using the master theorem to find its runtime.</p>
 
         
       </section>
