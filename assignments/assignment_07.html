@@ -239,6 +239,7 @@ customElements.define("confirm-link", ConfirmLink, { extends: "a" });
   <li><a href="#associative-arrays">Associative Arrays</a></li>
   <li><a href="#solving-problems-with-hashing">Solving Problems with Hashing</a></li>
   <li><a href="#modifications">Modifications</a></li>
+  <li><a href="#deliverables">Deliverables</a></li>
 </ul>
 	      	
             </nav>
@@ -254,6 +255,8 @@ customElements.define("confirm-link", ConfirmLink, { extends: "a" });
 
 <div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
  * Represents a mapping of keys to values.
+ * @param K the type of the keys
+ * @param V the type of the values
  */</span>
 <span class="kd">class</span> <span class="nc">AssociativeArray</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">V</span><span class="p">&gt;</span> <span class="p">{</span>
     <span class="cm">/**
@@ -306,11 +309,13 @@ customElements.define("confirm-link", ConfirmLink, { extends: "a" });
 
 <p>Your associative array should use separate chaining and the division-based method for hashing (consider using this resource <a href="https://planetmath.org/goodhashtableprimes">to determine primes to use in your hashing function</a>).  Your code should handle rehashing as the number of elements stored in your associative array grows.</p>
 
+<p>You will almost certainly need to create additional classes and/or functions to implement the associative array (don’t assume that the list of functions above is sufficient).</p>
+
 <p>Make sure your code is documented and has sufficient unit tests (the specific number and nature of the unit tests is up to you).</p>
 
 <h2 id="solving-problems-with-hashing">Solving Problems with Hashing</h2>
 
-<p>Choose a problem to solve with hashing.  Here are some suggestions.</p>
+<p>Choose a problem to solve with hashing.  Here are some suggestions.  (Note: you will also do a very brief writeup on your results from this, so make sure to look in the deliverables section for this).</p>
 
 <h3 id="lempel-ziv">Lempel-Ziv</h3>
 
@@ -337,7 +342,20 @@ customElements.define("confirm-link", ConfirmLink, { extends: "a" });
 <ol>
   <li>Choose a different hashing function to explore.</li>
   <li>Do some benchmarking to see how sensitive the performance of your associative array is to different choices for number of bins (e.g., using a power of 2 instead of a prime number).</li>
+  <li>As mentioned earlier, the Lempel-Ziv algorithm is extra credit.  If you do something else that is above and beyond what is written here, let me know, and we can discuss extra credit.</li>
 </ol>
+
+<h2 id="deliverables">Deliverables</h2>
+
+<p>Turn in a link to a Github repo with your deliverables.</p>
+
+<h3 id="code">Code</h3>
+
+<p>Your code contain the associative array data structure as well as the application to text processing.  Make sure your code is documented and has unit tests.</p>
+
+<h3 id="writeup">Writeup</h3>
+
+<p>Include a very brief writeup of the results you got applying associative arrays to solving a problem.  For example, if you did Lempel-Ziv, you might run it on several different input texts and discuss how much the algorithm compresses the data.  You can include the writeup as a markdown file in your repository.</p>
 
         
       </section>
