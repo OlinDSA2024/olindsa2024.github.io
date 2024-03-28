@@ -264,7 +264,7 @@ function HideShowElement(divID) {
 
 <h2 id="encoding">Encoding</h2>
 
-<p>We start with a stream of symbols and a codebook.  I’m going to use this string <a href="https://math.mit.edu/~djk/18.310/Lecture-Notes/LZ-worst-case.pdf">from Peter Schor’s notes</a> on the topic.</p>
+<p>We start with a stream of symbols and a codebook.  I’m going to use this string <a href="https://math.mit.edu/~djk/18.310/Lecture-Notes/LZ-worst-case.pdf">from Peter Shor’s notes</a> on the topic.</p>
 
 <blockquote>
   <p>AABABBBABAABABBBABBABB</p>
@@ -295,7 +295,36 @@ function HideShowElement(divID) {
 
 <p>When I wrote my own implementation, I found that it took me a while to figure out how to actually encode the data to binary (even though getting the codebook was fairly straightforward).  I found a nice helper class from Princeton that made the process a lot easier.  For your convenience, I (more accurately IntelliJ with some help from me) translated it into Java.  I modified the original design a bit to arrive at <a href="https://github.com/OlinDSA2024/HashingSample/blob/main/src/main/kotlin/BinaryUtils.kt">this version</a>.</p>
 
-<p>TODO: show some main ideas.</p>
+<p>The important functions in here are the following:</p>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Writes the specified bit to the output binary data.
+ * @param x the `boolean` to write.
+ */</span>
+<span class="k">fun</span> <span class="nf">write</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nc">Boolean</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="cm">/**
+ * Writes the *r*-bit int to the output binary data.
+ * @param x the `int` to write.
+ * @param r the number of relevant bits in the char.
+ * @throws IllegalArgumentException if `r` is not between 1 and 32.
+ * @throws IllegalArgumentException if `x` is not between 0 and 2&lt;sup&gt;r&lt;/sup&gt; - 1.
+ */</span>
+<span class="k">fun</span> <span class="nf">write</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">r</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">{}</span>
+
+
+<span class="cm">/**
+ * @return the output as a byte array
+ */</span>
+<span class="k">fun</span> <span class="nf">toByteArray</span><span class="p">():</span> <span class="nc">ByteArray</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">out</span><span class="p">.</span><span class="nf">toByteArray</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="cm">/**
+ * @return the output as a sequence of bytes that represent a string of
+ * 0's and 1's
+ */</span>
+<span class="k">fun</span> <span class="nf">toBinaryString</span><span class="p">():</span><span class="nc">ByteArray</span><span class="p">?</span> <span class="p">{}</span>
+</code></pre></div></div>
 
         
       </section>
