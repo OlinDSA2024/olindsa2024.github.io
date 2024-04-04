@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.17.2 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+--><html lang="en" class="no-js">
+  <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+
+<script>
+class AnchorNoProxy extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this._$a = null;
+  }
+  connectedCallback() {
+    const href = this.getAttribute("href") || "#";
+    if (this.dataset.hasOwnProperty('canvas')) {
+        const canvasURL = this.dataset.canvas;
+        this.shadowRoot.innerHTML = `<style>a:hover, a:active { outline: 0; }\na { color: #5197ad; }\na:visited { color: #5197ad; }\na:hover { color: #266477; outline: 0; }</style><a href="${href}" data-canvas="${canvasURL}"><slot></slot></a>`;
+    } else {
+        this.shadowRoot.innerHTML = `<style>a:hover, a:active { outline: 0; }\na { color: #5197ad; }\na:visited { color: #5197ad; }\na:hover { color: #266477; outline: 0; }</style><a href="${href}"><slot></slot></a>`;
+    }
+    this._$a = this.shadowRoot.querySelector("a");
+    this._$a.addEventListener("click", e => {
+      var url = this.getAttribute('href');
+      e.preventDefault();
+      if (document.referrer.startsWith('https://lms.hypothes.is') && this.dataset.hasOwnProperty('canvas')) {
+        // get rid of proxy if it was added
+        var n = this.dataset.canvas.search('https://olin.instructure.com');
+        window.open(this.dataset.canvas.substring(n), '_blank');
+      } else {
+        window.open(url, '_blank');
+      }
+    });
+  }
+  static get observedAttributes() { return ["href"]; }
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue !== newValue) {
+      if (this._$a === null) return;
+      this._$a.setAttribute("href", newValue);
+    }
+  }
+}
+
+customElements.define("a-no-proxy", AnchorNoProxy);
+
+class NoProxy extends HTMLAnchorElement {
+  connectedCallback() {
+    this.addEventListener("click", e => {
+      e.preventDefault();
+      if (document.referrer.startsWith('https://lms.hypothes.is') && this.dataset.hasOwnProperty('canvas')) {
+        // get rid of proxy if it was added
+        var n = this.dataset.canvas.search('https://olin.instructure.com');
+      	window.open(this.dataset.canvas.substring(n), '_blank');
+      } else {
+      	window.open(this.href, '_blank');
+      }
+    });
+  }
+}
+
+customElements.define("no-proxy", NoProxy, { extends: "a" });
+
+class ConfirmLink extends HTMLAnchorElement {
+  connectedCallback() {
+    this.addEventListener("click", e => {
+      const result = confirm(`Are you sure you want to go to '${this.href}'?`);
+      if (!result) e.preventDefault();
+    });
+  }
+}
+
+customElements.define("confirm-link", ConfirmLink, { extends: "a" });
+
+</script>
+
+<!-- begin _includes/seo.html --><title>Day 20: More RB-Trees and Nearest Neighbor Search - Data Structures Spring 2024 @ Olin College</title>
+<meta name="description" content="Website">
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Data Structures Spring 2024 @ Olin College">
+<meta property="og:title" content="Day 20: More RB-Trees and Nearest Neighbor Search">
+<meta property="og:url" content="/in_class/day20.html">
+
+
+  <meta property="og:description" content="Website">
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="canonical" href="/in_class/day20.html">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": null,
+      "url": "/"
+    
+  }
+</script>
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Data Structures Spring 2024 @ Olin College Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  <script>MathJax={"tex":{"inlineMath":[["$","$"],["\\(","\\)"]],"displayMath":[["$$","$$"],["\\[","\\]"]]},"svg":{"fontCache":"global"}}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <h2 class="screen-reader-text">Skip links</h2>
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="https://qeacourse.github.io/RoboNinjaWarrior/website_graphics/olinlogo.png" alt=""></a>
+        
+        <a class="site-title" href="/">
+          Data Structures Spring 2024 @ Olin College
+          
+        </a>
+        <ul class="visible-links"></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Day 20: More RB-Trees and Nearest Neighbor Search">
+    
+    
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Day 20: More RB-Trees and Nearest Neighbor Search
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+          <aside class="sidebar__right sticky">
+            <nav class="toc">
+              <header><h4 class="nav__title">
+<i class="fas fa-file-alt"></i> On this page</h4></header>
+	      
+                <ul class="toc__menu">
+  <li><a href="#red-black-tree-insertions">Red-Black Tree Insertions</a></li>
+  <li><a href="#nearest-neighbor-search">Nearest Neighbor Search</a></li>
+  <li><a href="#kd-trees">KD-Trees</a></li>
+  <li><a href="#approximate-nearest-neighbor-ann-search">Approximate Nearest Neighbor (ANN) Search</a></li>
+</ul>
+	      	
+            </nav>
+          </aside>
+        
+        <h2 id="red-black-tree-insertions">Red-Black Tree Insertions</h2>
+
+<p>Last class we learned about the concept of binary search trees (BSTs) and how the notion of balance is crucial to obtaining good performance.</p>
+
+<p>We saw, in detail, one particular type of self-balancing binary search tree called a <a href="https://en.wikipedia.org/wiki/Red%E2%80%93black_tree">Red-Black tree</a>.  Red-Black trees maintain balance by performing rotations to move subtrees with greater height up the tree and subtrees with lesser height down the tree (thereby equalizing the overall height of the tree).</p>
+
+<p><img src="../images/Binary_Tree_Rotation_(animated).gif" alt="An animation showing a binary tree rotatin to the left and then to the right.">
+Source: <a href="https://commons.wikimedia.org/wiki/File:Binary_Tree_Rotation_(animated).gif">Wikimedia Commons</a></p>
+
+<p>We saw that red-black trees work by enforcing four invariants with respect to the nodes in the tree.</p>
+
+<ol>
+  <li>Each node in the tree is colored either red or black.</li>
+  <li>The root is black and each of the (null) leaves are black.</li>
+  <li>If a node is red, then both its children are black.</li>
+  <li>The number of black nodes encountered on any path from the root to a leaf (null) is equal.</li>
+</ol>
+
+<p>When inserting nodes into an RB-tree we follow the following process:</p>
+
+<ol>
+  <li>Insert the node into the appropriate location in the tree (based on the BST property) and color it red. Question for the class: which of the four properties above could be violated after this step?</li>
+  <li>Match the current state of the tree to the one of three cases.  Perform a remedial action (recoloring and/or rotation) based on the specific case.</li>
+  <li>Check to see if there are additional violations higher up the tree.</li>
+</ol>
+
+<p><img src="/images/clrs_rbtrees.png" alt="Three possible cases for red-black tree remediation">
+Source: CLRS textbook</p>
+
+<p><strong>Problem 1</strong>  Above is the result of inserting the node 4 into the RB tree.  Note what transformations to the tree were performed at each step.</p>
+
+<p><strong>Problem 2</strong> At each step, argue that the modification to the tree moves the potential violation closer to root while removing the violation farther from the root.  <strong>Consider the application of case 2 and case 3 to be a single step for the purposes of this question</strong>.</p>
+
+<h2 id="nearest-neighbor-search">Nearest Neighbor Search</h2>
+
+<blockquote>
+  <p>Nearest neighbor search (NNS), as a form of proximity search, is the optimization problem of finding the point in a given set that is closest (or most similar) to a given point. Closeness is typically expressed in terms of a dissimilarity function: the less similar the objects, the larger the function values.
+ – <a href="https://en.wikipedia.org/wiki/Nearest_neighbor_search">Wikipedia page on Nearest Neighbor Search</a></p>
+</blockquote>
+
+<p>This algorithm is handy in a wide variety of data analysis, computer graphics, video game, computer vision, and machine learning tasks.  Specific examples include data classification, clustering, template matching, and photogrammetry.</p>
+
+<p>The nearest neighbor algorithm consists of a set of training points $x_1, \ldots, x_n$ with each $x_i \in \mathbb{R}^d$ (i.e., each point has $d$-dimensions).</p>
+
+<p>Given a query point, $x_q$ (with $x_q \in \mathbb{R}^d$), the nearest neighbor is defined as the closest point in our set of training points, where closeness is given by some distance function.  The distance function could be Euclidean distance, Manhattan distance, or something more exotic.</p>
+
+<p><strong>Problem 3</strong> What is the time complexity of finding the nearest neighbor to the query point in terms of the number of training points $n$ and the dimensionality $d$ of the data?</p>
+
+<h2 id="kd-trees">KD-Trees</h2>
+
+<p>Given the fact that we were able to dramatically speed up our search for the closest point in 1-dimensions with the Red-Black tree, it is natural to ask the of question of whether there is a way to use the same ideas to speed up the search for the nearest neighbor to some query point.  The answer to this question is “yes… maybe”.  Next, we’ll see a structured called KD-trees, which can, in some conditions, speed up nearest neighbor search.</p>
+
+<p>I’ll go through the ideas on the board.  A nice visualization of the algorithm is shown in <a href="https://en.wikipedia.org/wiki/File:Kdtreeogg.ogv">this video</a>.</p>
+
+<h3 id="kd-trees-in-practice">KD-Trees in Practice</h3>
+
+<p>While KD-Trees might seem like a golden-ticket, they do not perform well when the number of data points is too close to the number of dimensions.  In fact for KD-trees to work well, you need $n \gg 2^d$.</p>
+
+<h2 id="approximate-nearest-neighbor-ann-search">Approximate Nearest Neighbor (ANN) Search</h2>
+
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+      </footer>
+
+      
+
+      
+    </div>
+
+    
+  </article>
+
+  
+  
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">© 2024 Data Structures Spring 2024 @ Olin College.</div>
+
+      </footer>
+    </div>
+
+    <script src="/assets/js/copyCode.js"></script>
+
+
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://kit.fontawesome.com/4eee35f757.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
